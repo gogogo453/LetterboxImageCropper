@@ -66,18 +66,6 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 | `ImageFiles.cs` | Folder scan (natural sort order) |
 | `Codecs.cs` | Restricts decoding/encoding to JPEG and PNG |
 
-### Versioning
-
-The version is set in one place: `VersionPrefix` in `LetterboxImageCropper.csproj` (format `MAJOR.MINOR.PATCH`). It is shown in the window title and in the exe's file properties.
-
-To release a new version:
-
-1. Increase `VersionPrefix`: patch for fixes, minor for new features, major for breaking changes.
-2. Add an entry to `CHANGELOG.md`.
-3. Publish.
-
-For a pre-release build, add a suffix when publishing, e.g. `-p:VersionSuffix=beta.1` (shown as `1.1.0-beta.1`).
-
 ### Third-party library
 
 [SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) **3.1.12**, under the Six Labors Split License. It is deliberately pinned to 3.1.x: versions 3.2 and later require a Six Labors license key for Release builds. Only the JPEG and PNG codecs are enabled.
