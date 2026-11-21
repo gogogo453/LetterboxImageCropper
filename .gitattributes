@@ -1,0 +1,13 @@
+# Auto-detect text files and normalize to LF in the repo
+* text=auto eol=lf
+
+# Force CRLF (Windows) for Windows-specific scripts
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Prevent Git from modifying binary files
+*.png binary
+*.jpg binary
+*.pdf binary
+*.zip binary
