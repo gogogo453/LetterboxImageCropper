@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <!-- Disabled on purpose: System.Drawing and NetVips share type names (Image). -->
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <!-- The bundled libvips binary is 64-bit Windows only. -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PlatformTarget>x64</PlatformTarget>
+    <!--
+      Keep libvips-42.dll as a separate file next to the exe (also in single-file publishing): libvips and several
+      bundled libraries are LGPL, which requires that users can replace them. See THIRD-PARTY-NOTICES.md.
+    -->
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+    <RootNamespace>LetterboxImageCropper</RootNamespace>
+    <AssemblyTitle>Letterbox Image Cropper</AssemblyTitle>
+    <Product>Letterbox Image Cropper</Product>
+    <Authors>Andrei Radishyn</Authors>
+    <Description>Letterbox Image Cropper</Description>
+  </PropertyGroup>
+
+  <!--
+    Versioning - the single source of truth for the application version.
+    Semantic Versioning (MAJOR.MINOR.PATCH). For a release: bump VersionPrefix and add an entry to CHANGELOG.md.
+    The window title and the exe's file properties are derived from these values (see AppInfo.cs).
+    Pre-release builds: set VersionSuffix (e.g. beta.1 -> 1.1.0-beta.1), here or via -p:VersionSuffix=beta.1.
+  -->
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <!-- Keep the displayed version clean (no "+<commit hash>" appended by the SDK). -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Copyright>Copyright 2026 Andrei Radishyn</Copyright>
+    <PackageProjectUrl>https://github.com/gogogo453/LetterboxImageCropper</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/gogogo453/LetterboxImageCropper</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Image I/O: NetVips (MIT) + the native libvips build for 64-bit Windows (LGPL-3.0-or-later). Keep both versions in step. -->
+    <PackageReference Include="NetVips" Version="3.2.0" />
+    <PackageReference Include="NetVips.Native.win-x64" Version="8.18.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- License texts travel with every build and release. -->
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="THIRD-PARTY-NOTICES.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <!-- Full GNU LGPL-3.0 and GPL-3.0 texts, required when distributing the LGPL-licensed libvips-42.dll. -->
+    <None Include="licenses\*.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
