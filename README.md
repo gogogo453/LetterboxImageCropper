@@ -2,7 +2,7 @@
 
 Removes black bars (top/bottom, left/right, or both) from a folder of images. Originals are not changed; cropped copies are saved to a `_fixed` subfolder.
 
-Supported files: `.jpg`, `.jpeg`, `.png`. Runs on 64-bit Windows; no .NET installation needed.
+Supported files: `.jpg`, `.jpeg`, `.png`. Runs on 64-bit Windows; no .NET installation needed. Keep `libvips-42.dll` in the same folder as the exe.
 
 ## Usage
 
@@ -46,11 +46,13 @@ Requires the .NET 10 SDK (Windows).
 dotnet build -c Release
 ```
 
-Single-file, self-contained exe (about 50 MB, written to `publish\`):
+Self-contained release build, written to `publish\`:
 
 ```bash
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -o publish
 ```
+
+The output is `LetterboxImageCropper.exe` (about 50 MB), `libvips-42.dll` (about 18 MB), `LICENSE`, `THIRD-PARTY-NOTICES.md` and the `licenses` folder. Distribute them together. The DLL is intentionally kept as a separate file (see below).
 
 ### Project structure
 
@@ -64,8 +66,12 @@ dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=
 | `CropAnalyzer.cs` | Grouping by resolution, voting, image statuses |
 | `ImageExporter.cs` | Cropping, encoding, metadata |
 | `ImageFiles.cs` | Folder scan (natural sort order) |
-| `Codecs.cs` | Restricts decoding/encoding to JPEG and PNG |
+| `Codecs.cs` | Image I/O through libvips; only the JPEG and PNG loaders are enabled |
+| `JpegHeader.cs` | Reads a JPEG's quality and chroma subsampling from its header |
 
-### Third-party library
+### Third-party libraries
 
-[SixLabors.ImageSharp](https://github.com/SixLabors/ImageSharp) **3.1.12**, under the Six Labors Split License. It is deliberately pinned to 3.1.x: versions 3.2 and later require a Six Labors license key for Release builds. Only the JPEG and PNG codecs are enabled.
+- [NetVips](https://github.com/kleisauke/net-vips) **3.2.0** (MIT): .NET binding for libvips.
+- [libvips](https://www.libvips.org/) **8.18.7**, from the `NetVips.Native.win-x64` package (LGPL-3.0-or-later, with bundled libraries under their own licenses). It is loaded from the separate `libvips-42.dll`, which users may replace, as the LGPL requires.
+
+Details, licenses and source locations are in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). Keep `NetVips` and `NetVips.Native.win-x64` on matching versions when updating.
