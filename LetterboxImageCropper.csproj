@@ -51,23 +51,20 @@
   <ItemGroup>
     <!-- License texts travel with every build and release. -->
     <None Update="LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+      </None>
     <None Update="THIRD-PARTY-NOTICES.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
     <!-- Full GNU LGPL-3.0 and GPL-3.0 texts, required when distributing the LGPL-licensed libvips-42.dll. -->
-    <None Include="licenses\*.txt">
+    <None Update="licenses\*.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+    <None Update="CHANGELOG.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
